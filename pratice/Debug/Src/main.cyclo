@@ -1,0 +1,4 @@
+../Src/main.c:27:6:sDelay	2
+../Src/main.c:31:5:main	1
+../Src/main.c:53:6:extLed	1
+../Src/main.c:68:6:led	1
