@@ -1,0 +1,1 @@
+analyzer.o: ../analyzer.c
