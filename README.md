@@ -21,6 +21,7 @@ NOTE - This repository contains architecture-specific, register-level code writt
 2. keyborad interfacing 
 - description:  4*4 keyboard interfacing with the stm32 discovery borad.
 - learning focus: GPIO input/output scanning , pull-up config.
+- STATUS: NOT_YET_VERIFY
 
 3. onBoardLed
 - description:  board 4 led blinking 
@@ -36,4 +37,9 @@ NOTE - This repository contains architecture-specific, register-level code writt
 - description: section of the folder deal with the glowing up of led when the button is on.
 
 7. toggling = SORRY 
+
+8. PRATICAL_DEMONSTRATION
+- description: this code will test the stm32 board and useful for explaning the basic code approach for any nw user.
+- STATUS: NOT_YET_VERIFY
+
 
