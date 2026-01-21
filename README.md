@@ -42,4 +42,6 @@ NOTE - This repository contains architecture-specific, register-level code writt
 - description: this code will test the stm32 board and useful for explaning the basic code approach for any nw user.
 - STATUS: NOT_YET_VERIFY
 
-
+9. SPI_waveform.c
+- description: this code is for the verifying the code for the SPI peripheral interfacing using the WAVE FORM ANALYZER
+- STATUS: NOT_YET_VERIFY
