@@ -50,17 +50,10 @@ void SPI_periClockControl(SPI_RegDef_t *pSPIx,uint8_t EnOrDi){
  *  INIT and DE-Init
  */
 void SPI_Init(SPI_Handle_t *pSPIHandle){
-
-	// peripheral clock enable
-	SPI_periClockControl(pSPIHandle->pSPIx, ENABLE);
-
-
-
-uint32_t tempreg = 0;  //configuring multiple bit field with out clearing other bits
+uint32_t tempreg = 0;
 
 // 1. config the device mode
 	tempreg |= pSPIHandle->SPIConfig.SPI_DeviceMode <<2;
-
 //2, config the bus config
 	if(pSPIHandle->SPIConfig.SPI_BusConfig == SPI_BUS_CONFIG_FD){
 		// bidi mode should be cleared
@@ -92,61 +85,12 @@ uint32_t tempreg = 0;  //configuring multiple bit field with out clearing other 
 /*
  * IRQ configuration and ISR handling
  */
-void SPI_DeInit(SPI_RegDef_t *pSPIx){ // DO IT YOURSELF
-
-	if (pSPIx == SPI1){
-		SPI1_REG_RESET();
-	}
-	else if (pSPIx == SPI2){
-		SPI2_REG_RESET();
-	}
-	else if (pSPIx == SPI3){
-		SPI3_REG_RESET();
-	}
-	// not done yet for the SPI4_reg_reset
-
-}
+void SPI_DeInit(SPI_RegDef_t *pSPIx);  // DO IT YOURSELF
 
 /*
  *  Data send and receive
  */
-
-//  STATUS REGISTER ARE DEFINED IN SPI STATUS REGISTER (SPI _SR)
-uint8_t SPI_GETFLAGSTATUS(SPI_RegDef_t *pSPIx,uint32_t FlagName){
-	if(pSPIx->SR & FlagName){
-		return SET;
-	}
-	return RESET;
-}
-
-/*
- *  RE EVALUATE THE CODE  --- POINTER USE
- */
-void SPI_SendData(SPI_RegDef_t *pSPIx,uint8_t *pTxBuffer,uint32_t Len){
-	// DESCRIPTION :  THIS IS A BLOCKING CALL
-	while(Len >0){
-		//1. wait until TXE is set
-		// POLING BASED CODE
-		while (SPI_GETFLAGSTATUS(pSPIx,SPI_TXE_FLAG ) == RESET); //define in MACRO: SPI_TXE_FLAG == (1<<SPI_SR_TXE)
-		// IN ORDER TO DEAL WITH IT WE NEED THE WATCH DOG TIMER, to get out from the completly exit form the poling
-		//2. check the DFF bit
-		if(pSPIx->CR1 &(1<<SPI_CR1_DFF) ){
-			//16 bit format
-			//1. load the data into the DR
-			pSPIx->DR = *((uint16_t*)pTxBuffer);
-			Len--;
-			Len--;
-			// incrementing the pointer
-			(uint16_t*)pTxBuffer++;
-		}
-		else{
-			// 8 bit format
-			pSPIx->DR = *pTxBuffer;
-			Len--;
-			pTxBuffer++;
-		}
-	}
-}
+void SPI_SendData(SPI_RegDef_t *pSPIx,uint8_t *pTxBuffer,uint32_t Len);
 void SPI_ReceiveData(SPI_RegDef_t *pSPIx,uint8_t *pRxBuffer,uint32_t Len);
 /*
  *  IRQ configuration and ISR handling
@@ -154,18 +98,6 @@ void SPI_ReceiveData(SPI_RegDef_t *pSPIx,uint8_t *pRxBuffer,uint32_t Len);
 void SPI_IRQInterruptConfig(uint8_t IRQNumber,uint8_t ENorDI);
 void SPI_IRQPriorityConfig(uint8_t IRQNumber, uint32_t IRQPriority);
 void SPI_IRQHandling(SPI_Handle_t *pHandle);
-/*
- * other peripheral control APIs
- */
-
-void SPI_PeripheralControl(SPI_RegDef_t *pSPIx,uint8_t EnOrDi){
-	if(EnOrDi == ENABLE){
-		pSPIx->CR1 |= (1<<SPI_CR1_SPE); // enable the SPE (SPI peripheral enable )bit
-	}
-	else{
-		pSPIx->CR1 &= ~(1<<SPI_CR1_SPE);
-	}
-}
 
 void SPI_SSIConfig(SPI_RegDef_t *pSPIx,uint8_t EnOrDi){
 	if(EnOrDi == ENABLE){
@@ -173,26 +105,11 @@ void SPI_SSIConfig(SPI_RegDef_t *pSPIx,uint8_t EnOrDi){
 	}
 	else{
 		pSPIx->CR1 &= ~(1<<SPI_CR1_SSI);
-
 	}
 }
-
-
-void SPI_SSOEConfig(SPI_RegDef_t *pSPIx,uint8_t EnOrDi){
-	if(EnOrDi == ENABLE){
-		pSPIx->CR2 |= (1<<SPI_CR2_SSOE);
-	}
-	else{
-		pSPIx->CR2 &= ~(1<<SPI_CR2_SSOE);
-
-	}
-}
-
-
-
-
-
-
+/*
+ * other peripheral control APIs
+ */
 
 
 

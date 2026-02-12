@@ -72,7 +72,7 @@ void SPI2_Inits(void){
 	SPIHandle2.SPIConfig.SPI_CPHA = SPI_CPOL_LOW;
 	SPIHandle2.SPIConfig.SPI_CPOL = SPI_CPHA_LOW;
 	SPIHandle2.SPIConfig.SPI_SSM = SPI_SSM_EN; //for NSS
-
+	SPIHandle2.SPIConfig.
 	SPI_Init(&SPIHandle2);
 
 }
@@ -85,7 +85,13 @@ char user_data[] = "hello World";
 
 	SPI2_Inits(); //initialize the SPI2 peripheral parameters
 
+	SPI_PeripheralControl(SPI2,ENABLE); // enable the SPI enable bit
+
+	// this makes NSS signal internally high and avoid MODF error
+	SSI_PeripheralControl(SPI2,ENABLE); // enable the SSI bit
+
 	SPI_SendData(SPI2,(uint8_t*) user_data, strlen(user_data));
+	SSI_PeripheralControl(SPI2,DISABLE); // don't forget to do that
 	while(1);
 
 	return 0;

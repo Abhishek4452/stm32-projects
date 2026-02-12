@@ -43,7 +43,7 @@ typedef struct
 #define SPI_BUS_CONFIG_FD		      1
 #define SPI_BUS_CONFIG_HD   		  2
 // no need of it - #define SPI_BUS_CONFIG_SIMPLEX_TXONLY 3
-#define SPI_BUS_CONFIG_SIMPLEX_RXONLY 4  //bidirection rx only mode
+#define SPI_BUS_CONFIG_SIMPLEX_RXONLY 4
 /*
  *     @SPI_SclkSpeed
  *     BR( baud rate ) decide the speed, 3 bits = 8 possible combination
@@ -79,20 +79,7 @@ typedef struct
  */
 #define SPI_SSM_EN				1
 #define SPI_SSM_DI    			0
-/*
- *  ADDITIONAL MACRO
- */
-#define SPI_CPHA_LOW                        0
-#define SPI_CPHA_HIGH                       1
-#define SPI_CPOL_LOW                        0
-#define SPI_CPOL_HIGH                       1
 
-/*
- *   SPI RELATED STATUS FLAG DEFINATION
- */
-#define SPI_TXE_FLAG            (1<<SPI_SR_TXE)
-#define SPI_RXNE_FLAG 			(1<<SPI_CR2_RXNE)
-#define SPI_BUSY_FLAG   		(1<<SPI_CR2_BSY)
 /*******************************************************************************************************************************************************************
  *                                              API SUPPORTED BY THE SPI
  * ****************************************************************************************************************************************************************/
@@ -101,6 +88,9 @@ typedef struct
  *    PERIPHERAL CLK SETUP
  */
 void SPI_periClockControl(SPI_RegDef_t *pSPIx,uint8_t EnOrDi);
+
+
+
 
 /*
  *  INIT and DE-Init
@@ -126,9 +116,6 @@ void SPI_IRQHandling(SPI_Handle_t *pHandle);
 /*
  * other peripheral control APIs
  */
-void SPI_PeripheralControl(SPI_RegDef_t *pSPIx,uint8_t EnOrDi);
 void SPI_SSIConfig(SPI_RegDef_t *pSPIx,uint8_t EnOrDi);
-uint8_t SPI_GetFlagStatus(SPI_RegDef_t *pSPIx,uint32_t FlagName); // may be not yet done
-void SPI_SSOEConfig(SPI_RegDef_t *pSPIx, uint8_t EnOrDi);
 
 #endif /* STM32F407_SPI_DRIVER_H_ */
